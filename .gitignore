@@ -21,9 +21,14 @@
 /docs/*
 !/docs/third-party.md
 
-# Local fonts, provenance, debug maps, credentials and OS metadata.
+# Font provenance, debug maps, credentials and OS metadata.
 /public/fonts/*
 !/public/fonts/README.md
+!/public/fonts/SimSun.ttf
+!/public/fonts/SimHei.ttf
+!/public/fonts/KaiTi.ttf
+!/public/fonts/FangSong.ttf
+!/public/fonts/DengXian.ttf
 *.map
 .DS_Store
 .env

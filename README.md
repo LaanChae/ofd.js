@@ -34,7 +34,7 @@ Node.js 版本由 `.node-version` 指定。根地址通过 `public/_redirects` �
 
 首次上传仅包含运行、构建及维护 PDF.js 集成所需的文件。测试样例、公文、标准 PDF、Windows 安装程序、临时输出、依赖目录和构建产物不进入仓库。
 
-本仓库不分发 SimSun、SimHei、KaiTi、FangSong、DengXian 的本机字体文件。内嵌字体正常使用；缺少字体时可在阅读器中导入字体，或在支持本机字体 API 的浏览器中授权读取。构建时只登记 `public/fonts/` 中实际存在的项目字体。
+本仓库包含 SimSun、SimHei、KaiTi、FangSong、DengXian 五种项目字体，构建后随静态网站提供，按文档需要加载。阅读器也支持内嵌字体、用户导入字体和浏览器本机字体 API。字体来源与许可说明见 [项目字体](public/fonts/README.md)。
 
 PDF 与 OFD 的混合模式、字体及动作并不完全等价，转换会提示无法原样保留的内容。数字签名不能通过格式转换保持有效。
 

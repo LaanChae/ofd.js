@@ -14,7 +14,7 @@
 | sm-crypto-v2 | 1.15.1 | SM2 / SM3 签名及验签 | MIT；https://github.com/Cubelrti/sm-crypto-v2 |
 | @noble/hashes | 1.8.0 | 国标默认 MD5 引用摘要（标记弱算法） | MIT；https://github.com/paulmillr/noble-hashes |
 | svgpath | 2.6.0 | PDF 输出路径标准化 | MIT；https://github.com/fontello/svgpath |
-| SimSun / SimHei / KaiTi / FangSong / DengXian | 可选本机资源，不随仓库分发 | 原字体匹配与手动替换 | 非开源字体；网站托管或随应用分发需取得相应授权。详见 [字体说明](../public/fonts/README.md) |
+| SimSun / SimHei / KaiTi / FangSong / DengXian | 本机安装复制的常规字重，随项目提供 | 原字体匹配与手动替换 | 非开源字体；网站托管或随应用分发需取得相应授权。详见 [字体说明](../public/fonts/README.md) |
 
 没有直接使用 ofd.js 的发布 bundle；不依赖 parser_helper_x.js / 商业 parser_x.js。文字定位算法依据国标重写，保留参考来源说明，修复了 X/Y 继承、逐字位置、Unicode code point 和字形映射等问题。
 
