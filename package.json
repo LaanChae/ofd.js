@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "start": "node scripts/serve.mjs"
+    "start": "node scripts/serve.mjs",
+    "test:font-chunks": "node scripts/prepare-mupdf.mjs && node --test tests/font-chunks.test.mjs"
   },
   "dependencies": {
     "@noble/hashes": "1.8.0",

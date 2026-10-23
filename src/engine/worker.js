@@ -20,8 +20,6 @@ let localFonts = [], requestedFonts = new Set(), fontSerial = 0;
 const fontRequests = new Map();
 const yieldTask = () => new Promise(resolve => setTimeout(resolve, 0));
 async function prepareFonts() {
-  const revision = store.revision;
-  await loadBundledFonts(document, store, choices, document.referencedFonts);
   const probe = new DocumentFonts(document, store, choices);
   const indexes = matchLocalFonts(probe.usages.filter(f => document.referencedFonts.has(f.id)), localFonts)
     .filter(index => !requestedFonts.has(index));
@@ -38,7 +36,8 @@ async function prepareFonts() {
       } catch (error) { document.warnings.add(`本机字体：${error.message}`); }
     }
   }
-  if (store.revision !== revision) {
+  await loadBundledFonts(document, store, choices);
+  if (preview.fontRevision !== store.revision) {
     preview?.destroy();
     preview = new DirectDocument(document, store, choices);
   }
@@ -184,7 +183,7 @@ async function handle({ id, method, args }, signal) {
         };
         break;
       case "setFonts": {
-        await loadBundledFonts(document, store, args.choices, document.referencedFonts);
+        await loadBundledFonts(document, store, args.choices);
         const nextPreview = new DirectDocument(document, store, args.choices);
         const next = nextPreview.metadata();
         preview.destroy();

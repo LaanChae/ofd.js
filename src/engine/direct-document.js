@@ -13,6 +13,7 @@ import {readAttachments, attachmentContent} from "./attachments.js";
 export class DirectDocument {
   constructor(doc, store, choices = {}) {
     this.doc = doc;
+    this.fontRevision = store.revision;
     this.backend = { forms: { paint() {} }, pattern: drawDirectPattern };
     this.renderer = new Renderer(doc, store, choices, this.backend);
     this.textCache = new Map();

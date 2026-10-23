@@ -9,7 +9,6 @@ import { PdfForms } from "./pdf-forms.js";
 import * as m from "mupdf";
 import {pixelImage} from "./image-samples.js";
 import {drawCompositeGroup} from "./pdf-composite.js";
-import { parseASN1 } from "./signatures.js";
 import {
   name,
   children,
@@ -33,7 +32,6 @@ import {
 } from "./geometry.js";
 import { DocumentFonts } from "./fonts.js";
 import { drawGradient } from "./gradients.js";
-import { OfdDocument } from "./document.js";
 import { writePdfNavigation } from "./navigation.js";
 import { writePdfExtensions } from "./extensions.js";
 
@@ -698,15 +696,13 @@ export class Renderer {
         this.doc.warnings.add("签章缺少 SignedValue，未绘制外观。");
         continue;
       }
-      const bytes = this.doc.archive.read(resolve(file, value));
-      const images = signatureImages(bytes);
-      if (!images.length) {
+      const image = this.doc.signatureImage(file, root);
+      if (!image) {
         this.doc.warnings.add("签章外观无法解析；数字签名未验证。");
         continue;
       }
       for (const stamp of stamps) {
-        const b = numbers(attr(stamp, "Boundary"), 4),
-          image = images[0];
+        const b = numbers(attr(stamp, "Boundary"), 4);
         this.clipBox(device, b, matrix);
         let extra = false;
         try {
@@ -719,9 +715,7 @@ export class Renderer {
             extra = true;
           }
           if (image[0] === 0x50 && image[1] === 0x4b) {
-            const sub = new OfdDocument(image);
-            if (text(sub.body, "Signatures"))
-              throw new Error("不允许递归嵌套签章。");
+            const sub = this.doc.sealDocument(file, image);
             const renderer = new Renderer(sub, this.store, {}, this.backend),
               p = sub.pages[0];
             const tm = multiply(
@@ -772,20 +766,6 @@ export class Renderer {
   }
 }
 
-function signatureImages(bytes) {
-  // Render only the SES-defined picture field, never arbitrary ASN.1 octets.
-  let root;
-  try {
-    root = parseASN1(bytes);
-  } catch {
-    return [];
-  }
-  const parts = root.valueBlock.value?.[0]?.valueBlock?.value;
-  if (![1, 4].includes(parts?.[0]?.valueBlock?.valueDec)) return [];
-  const info = parts?.[1]?.valueBlock?.value?.[0]?.valueBlock?.value;
-  const image = info?.[3]?.valueBlock?.value?.[1]?.valueBlock?.valueHexView;
-  return image?.length ? [image] : [];
-}
 
 export function ofdToPdf(doc, store, choices = {}, progress = () => {}, {subsetFonts = true} = {}) {
   if(typeof subsetFonts !== "boolean")throw new Error("字体子集化参数无效。");

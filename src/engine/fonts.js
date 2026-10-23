@@ -72,6 +72,7 @@ export class FontStore {
     this.importBytes = 0;
     this.imports = [];
     this.revision = 0;
+    this.bundles = new Map();
   }
   import(bytes, bundledId = null) {
     const bundled = bundledFonts.find((font) => font.id === bundledId);
@@ -122,6 +123,10 @@ export class FontStore {
           f.postscriptName ||
           `字体 ${index + 1}`;
       const font = documentFont(f.postscriptName || label, bytes, index);
+      if (bundledId) {
+        this.faces.get(id)?.font.destroy();
+        this.imports = this.imports.filter(entry => !entry.ids.includes(id));
+      }
       this.faces.set(id, {
         id,
         label,
@@ -193,6 +198,7 @@ export class FontStore {
     for (const f of this.faces.values()) f.font.destroy();
     this.faces.clear();
     this.imports = [];
+    this.bundles.clear();
   }
 }
 

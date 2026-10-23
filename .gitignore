@@ -12,6 +12,7 @@
 !/scripts/
 /scripts/*
 !/scripts/build.mjs
+!/scripts/build-fonts.mjs
 !/scripts/prepare-mupdf.mjs
 !/scripts/serve.mjs
 !/scripts/integrate-pdfjs.py
@@ -20,6 +21,9 @@
 !/docs/
 /docs/*
 !/docs/third-party.md
+!/tests/
+/tests/*
+!/tests/font-chunks.test.mjs
 
 # Font provenance, debug maps, credentials and OS metadata.
 /public/fonts/*

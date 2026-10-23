@@ -11,6 +11,7 @@ import {
 import { readDocumentProperties } from "./properties.js";
 import { selectDocument } from "./package.js";
 import { readNavigation } from "./navigation.js";
+import { signatureImages } from "./signature-picture.js";
 
 export class OfdDocument {
   constructor(bytes, selection = {}) {
@@ -35,6 +36,9 @@ export class OfdDocument {
       throw new Error("DocRoot 指向的不是 Document。");
     this.common = child(this.root, "CommonData");
     this.referencedFonts = new Set();
+    this.fontCharacters = new Map();
+    this.signaturePictures = new Map();
+    this.sealDocuments = new Map();
     this.resources = {
       fonts: new Map(),
       images: new Map(),
@@ -110,6 +114,10 @@ export class OfdDocument {
         Math.max(0, Math.min(box[1] + box[3], display[1] + display[3]) - top)];
       const annotations = this.annotations.get(page.id);
       if (annotations) this.collectFontReferences(annotations.root);
+      this.collectFontCharacters(root);
+      for (const id of page.templateIds)
+        this.collectFontCharacters(this.archive.xml(this.templates.get(id).file));
+      if (annotations) this.collectFontCharacters(annotations.root);
       page.physicalBox = box;
       page.loaded = true;
       return page;
@@ -129,6 +137,45 @@ export class OfdDocument {
   }
   get navigation() {
     return this._navigation ??= readNavigation(this);
+  }
+  collectFontCharacters(root) {
+    const pending = [root], seen = new Set();
+    while (pending.length) {
+      const node = pending.pop();
+      if (!node || seen.has(node)) continue;
+      seen.add(node);
+      const tag = name(node), id = attr(node, "Font");
+      if ((tag === "TextObject" || tag === "Text") && id) {
+        if (!this.fontCharacters.has(id)) this.fontCharacters.set(id, new Set());
+        const characters = this.fontCharacters.get(id);
+        for (const code of children(node, "TextCode"))
+          for (const character of code.textContent.replace(/\\([0-9a-fA-F]{4})/g, (_, hex) => String.fromCharCode(parseInt(hex, 16))))
+            characters.add(character.codePointAt(0));
+      }
+      const draw = attr(node, "DrawParam");
+      if (draw) pending.push(this.resources.draws.get(draw)?.node);
+      if (tag === "DrawParam" && attr(node, "Relative"))
+        pending.push(this.resources.draws.get(attr(node, "Relative"))?.node);
+      if (tag === "CompositeObject")
+        pending.push(this.resources.composites.get(attr(node, "ResourceID"))?.node);
+      for (const child of children(node)) pending.push(child);
+    }
+  }
+  signatureImage(file, root) {
+    if (!this.signaturePictures.has(file)) {
+      const value = text(root, "SignedValue");
+      this.signaturePictures.set(file, value ? signatureImages(this.archive.read(resolve(file, value)))[0] : null);
+    }
+    return this.signaturePictures.get(file);
+  }
+  sealDocument(file, image) {
+    if (!this.sealDocuments.has(file)) {
+      const sub = new OfdDocument(image);
+      if (text(sub.body, "Signatures")) throw Error("不允许递归嵌套签章。");
+      sub.page(0);
+      this.sealDocuments.set(file, sub);
+    }
+    return this.sealDocuments.get(file);
   }
   collectFontReferences(root, composites = null) {
     let hasActions = false;

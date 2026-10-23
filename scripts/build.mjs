@@ -3,14 +3,16 @@ import "./prepare-mupdf.mjs";
 import { mkdir, cp, rm } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { bundledFonts } from "../src/engine/font-catalog.js";
+import { buildFonts } from "./build-fonts.mjs";
 const availableFonts = bundledFonts.filter(font => existsSync(`public/fonts/${font.file}`));
 await rm("dist", { recursive: true, force: true });
 await mkdir("dist", { recursive: true });
 await cp("public", "dist", {
   recursive: true,
   filter: path => !path.endsWith(".map") && !path.endsWith(".DS_Store") &&
-    !path.endsWith("/fonts/provenance.json") && !path.endsWith("/fonts/README.md"),
+    !path.startsWith("public/fonts/"),
 });
+await buildFonts(availableFonts);
 await cp("licenses", "dist/licenses", { recursive: true });
 await mkdir("dist/vendor/mupdf", { recursive: true });
 for (const file of ["mupdf.js", "mupdf-wasm.js", "mupdf-wasm.wasm"])
