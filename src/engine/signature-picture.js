@@ -14,4 +14,3 @@ export function signatureImages(bytes) {
   const image = info?.[3]?.valueBlock?.value?.[1]?.valueBlock?.valueHexView;
   return image?.length ? [image] : [];
 }
-
