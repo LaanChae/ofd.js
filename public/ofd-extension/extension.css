@@ -1,0 +1,534 @@
+/* PDF.js provides dialog, button, focus and theme tokens. */
+:root {
+  --ofd-footer-height: 27px;
+}
+/* The OFD popup adapter forwards clicks; native text dragging passes through. */
+.annotationLayer .stampAnnotation[data-annotation-id^="ofd-annot-"] {
+  pointer-events: none;
+}
+html,
+body {
+  margin: 0;
+}
+#outerContainer {
+  height: calc(100% - var(--ofd-footer-height)) !important;
+  top: 0;
+}
+#ofdFooter,
+#ofdWelcome {
+  font:
+    13px/1.5 system-ui,
+    sans-serif;
+  color: var(--main-color);
+}
+#ofdFooter {
+  position: absolute;
+  inset: auto 0 0;
+  height: var(--ofd-footer-height);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 12px;
+  z-index: 1000;
+  background: var(--toolbar-bg-color);
+  border-top: 1px solid var(--separator-color);
+}
+#ofdStatus {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#ofdNotice {
+  margin-left: auto;
+  font-size: 11px;
+  white-space: nowrap;
+}
+#ofdWelcome {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: 43%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  max-width: 480px;
+  width: calc(100% - 48px);
+}
+#ofdWelcome h1 {
+  font-size: 25px;
+  font-weight: 500;
+  margin: 0 0 12px;
+}
+#ofdWelcome p {
+  margin: 12px 0 22px;
+}
+#ofdWelcome small {
+  display: block;
+  margin-top: 18px;
+}
+#ofdWelcome[hidden],
+#ofdNotice[hidden],
+#ofdExportOptions[hidden],
+#ofdPdfExportOptions[hidden] {
+  display: none;
+}
+/* Match PDF.js's compact property/password dialogs. Font, background, border,
+   shadow, toolbarField and button styles are supplied by viewer.css. */
+.ofdDialog {
+  width: min(540px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  box-sizing: border-box;
+  overflow: auto;
+}
+.ofdDialog h2,
+.ofdDialog h3 {
+  font: inherit;
+  font-weight: 600;
+  margin: 0 0 8px;
+  overflow-wrap: anywhere;
+}
+.ofdDialog p,
+.ofdDialog li {
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+  margin: 6px 0;
+}
+.ofdDialog section,
+.ofdDialog > details {
+  border-top: 1px solid var(--separator-color);
+  margin-top: 8px;
+  padding-top: 8px;
+}
+.ofdDialog summary {
+  cursor: pointer;
+  padding-block: 5px;
+}
+.ofdDialog .actions {
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.ofdDialog .toolbarField {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  font: inherit;
+}
+.ofdDialog input[type="file"] {
+  min-width: 0;
+  width: 100%;
+  font: inherit;
+}
+.ofdDialog :is(button, input, select, summary):focus-visible {
+  outline: var(--focus-ring-outline);
+  outline-offset: 2px;
+}
+.ofdDialog :disabled {
+  opacity: var(--button-disabled-opacity);
+}
+.ofdMuted,
+.font-footnote,
+.font-import span,
+.font-row small {
+  color: var(--main-color);
+  opacity: 0.8;
+}
+.ofdError,
+#ofdStatus.error {
+  color: light-dark(#a4000f, #ff9aa2);
+}
+.ofdForm {
+  display: grid;
+  gap: 6px;
+}
+.ofdForm > label,
+.ofdStampGrid > label {
+  display: grid;
+  grid-template-columns: 145px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+}
+.ofdForm > .ofdCheck {
+  display: flex;
+}
+.ofdFields {
+  display: table;
+  width: 100%;
+}
+.ofdFields > .row {
+  display: table-row;
+}
+.ofdFields > .row > * {
+  display: table-cell;
+  padding-block: 3px;
+}
+.ofdFields .row > p {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.ofdCertificateName {
+  margin: 4px 0;
+}
+#ofdConversionDialog,
+#ofdConversionResultDialog {
+  width: min(440px, calc(100vw - 32px));
+}
+#ofdFormatWarnings {
+  padding-inline-start: 18px;
+}
+.font-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--separator-color);
+}
+.font-row small {
+  display: block;
+  font-size: inherit;
+  overflow-wrap: anywhere;
+}
+.font-import {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+}
+#ofdExportOptions,
+#ofdPdfExportOptions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 14px 0;
+}
+#ofdExportOptions .ofdCheck,
+#ofdPdfExportOptions .ofdCheck {
+  flex-basis: 100%;
+}
+#ofdExportOptions .ofdCheck:has(input:disabled) {
+  opacity: var(--button-disabled-opacity);
+}
+#ofdLocalFontPicker {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0;
+}
+#ofdLocalFontChoice {
+  min-width: 0;
+  max-width: 65%;
+}
+@media (max-width: 700px) {
+  #ofdNotice {
+    display: none;
+  }
+  .font-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+@media print {
+  #ofdFooter,
+  #ofdWelcome,
+  .ofdDialog,
+  #ofdPropertiesDialog {
+    display: none !important;
+  }
+  #outerContainer {
+    top: 0;
+    height: 100% !important;
+  }
+}
+#secondaryToolbar .ofdMenuItem[hidden] {
+  display: none;
+}
+/* Keep every menu glyph square and preserve its aspect ratio, including in
+   Safari. PDF.js supplies the foreground, hover, disabled and theme colors. */
+.ofdMenuItem::before {
+  flex: 0 0 var(--icon-size);
+  width: var(--icon-size);
+  height: var(--icon-size);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+#ofdOriginal::before {
+  mask-image: url(../pdfjs/web/images/toolbarButton-download.svg);
+}
+#ofdConvert::before {
+  mask-image: url(../pdfjs/web/images/secondaryToolbarButton-scrollHorizontal.svg);
+}
+#ofdFontSettings::before {
+  mask-image: url(../pdfjs/web/images/toolbarButton-editorFreeText.svg);
+}
+#ofdPackage::before {
+  mask-image: url(images/documents.svg);
+}
+#ofdAnnotations::before {
+  mask-image: url(../pdfjs/web/images/comment-editButton.svg);
+}
+#ofdVerifySignatures::before {
+  mask-image: url(../pdfjs/web/images/toolbarButton-signaturePropertiesVerified.svg);
+}
+#ofdSign::before {
+  mask-image: url(../pdfjs/web/images/toolbarButton-editorSignature.svg);
+}
+#ofdCertificates::before {
+  mask-image: url(images/certificate.svg);
+}
+#ofdSeals::before {
+  mask-image: url(images/seal.svg);
+}
+#ofdClose::before {
+  mask-image: url(../pdfjs/web/images/pages_closeButton.svg);
+}
+.ofdDialog [hidden] {
+  display: none !important;
+}
+.ofdCheck {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ofdCheck input {
+  margin: 0;
+  accent-color: var(--button-primary-bg-color);
+}
+.ofdStampGrid {
+  display: grid;
+  gap: 6px;
+}
+#ofdStampPreview {
+  position: relative;
+  overflow: hidden;
+  background: white;
+  max-width: none;
+  border: 0;
+  margin-inline: auto;
+  touch-action: none;
+  user-select: none;
+  cursor: crosshair;
+}
+
+@media (max-width: 460px) {
+  .ofdForm > label,
+  .ofdStampGrid > label {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+  .ofdFields .row > * {
+    min-width: 65px;
+  }
+}
+@media (forced-colors: active) {
+  .ofdError {
+    color: CanvasText;
+  }
+}
+#ofdStampEditor {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.ofdTransparency {
+  position: relative;
+  width: 200px;
+  height: 180px;
+  max-width: 100%;
+  isolation: isolate;
+  background-color: light-dark(#fff, #38383d);
+  background-image: conic-gradient(
+    light-dark(#ddd, #505058) 25%,
+    transparent 0 50%,
+    light-dark(#ddd, #505058) 0 75%,
+    transparent 0
+  );
+  background-size: 20px 20px;
+  border: 1px solid var(--separator-color);
+  display: grid;
+  place-items: center;
+}
+.ofdTransparency img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.ofdTransparency span {
+  font-size: 14px;
+  text-align: center;
+  color: var(--main-color);
+}
+.ofdStampMark {
+  position: absolute;
+  overflow: hidden;
+  outline: 1px solid #0060df;
+  cursor: grab;
+  touch-action: none;
+}
+.ofdStampMark.ofdStampPending {
+  outline: 2px dashed #555;
+}
+.ofdStampMark img {
+  position: absolute;
+  max-width: none;
+  pointer-events: none;
+  user-select: none;
+}
+#ofdStampPlacements {
+  max-height: 160px;
+  overflow: auto;
+  padding-inline-start: 24px;
+}
+#ofdStampPlacements li {
+  margin-block: 4px;
+}
+#ofdStampPlacements button {
+  margin-inline-end: 6px;
+}
+@media (forced-colors: active) {
+  .ofdTransparency {
+    background: Canvas;
+  }
+  .ofdStampMark {
+    outline-color: Highlight;
+  }
+}
+
+#ofdSignDialog:has(#ofdStampFields:not([hidden])) {
+  width: min(760px, calc(100vw - 32px));
+}
+#ofdStampViewport {
+  overflow: auto;
+  max-height: 65dvh;
+  padding: 8px;
+  border: 1px solid var(--separator-color);
+  background: var(--body-bg-color);
+}
+#ofdStampPageCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+#ofdStampOverlay {
+  position: absolute;
+  inset: 0;
+}
+.ofdStampMark:focus-visible {
+  outline: var(--focus-ring-outline);
+  outline-offset: 2px;
+}
+.ofdStampMark:active {
+  cursor: grabbing;
+}
+.ofdStampNavigation {
+  align-items: center;
+}
+.ofdStampNavigation label {
+  white-space: nowrap;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.textLayer.ofdTextLayer {
+  --scale-factor: 1;
+  --total-scale-factor: 1;
+  --scale-round-x: 0.0001px;
+  --scale-round-y: 0.0001px;
+  --user-unit: 1;
+}
+
+/* Retain glyph layout while PDF.js suspends the selection layer for zoom. */
+.textLayer.ofdTextLayer[hidden] {
+  display: block !important;
+  opacity: 0;
+}
+
+#ofdStampKeywordResults {
+  max-height: 150px;
+  overflow: auto;
+  padding-inline-start: 24px;
+  margin-block: 0;
+}
+#ofdStampKeywordResults li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-block: 4px;
+}
+.ofdStampKeywordHit {
+  position: absolute;
+  pointer-events: none;
+  background: rgb(255 210 0 / 25%);
+  outline: 1px solid #a66b00;
+}
+@media (forced-colors: active) {
+  .ofdStampKeywordHit { outline-color: Highlight; background: transparent; }
+}
+/* Official-document tools use the native sidebar, dialogs and theme tokens. */
+#ofdOfficialMetadata::before { mask-image: url(../pdfjs/web/images/secondaryToolbarButton-documentProperties.svg); }
+#ofdOfficialStructure::before { mask-image: url(../pdfjs/web/images/toolbarButton-viewOutline.svg); }
+#ofdOfficialMark::before { mask-image: url(./images/official-mark.svg); }
+#officialView { padding: 4px 4px 0; }
+#officialView.hidden { display: none; }
+.ofdOfficialEmpty { font-size: 13px; color: var(--main-color); margin: 12px 8px; line-height: 1.5; }
+.ofdOfficialFields { display: grid; grid-template-columns: minmax(140px,auto) minmax(0,1fr); gap: 8px 12px; align-items: center; }
+.ofdOfficialIssues { max-height: 220px; overflow: auto; padding-inline-start: 20px; }
+.ofdOfficialHighlight { position: absolute; background: light-dark(#ffe66666,#ffd43b55); outline: 1px solid light-dark(#b77900,#ffdf6b); pointer-events: none; z-index: 5; }
+#ofdOfficialContext, #ofdOfficialNodeMenu { position: fixed; z-index: 10000; min-width: 210px; }
+#ofdOfficialContext[hidden], #ofdOfficialNodeMenu[hidden] { display: none; }
+#ofdOfficialText, #ofdOfficialDetailText { width: 100%; box-sizing: border-box; color: var(--main-color); background: var(--field-bg-color); }
+
+#ofdOfficial::before { mask-image: url(../pdfjs/web/images/toolbarButton-viewOutline.svg); }
+#ofdMetadata::before { mask-image: url(../pdfjs/web/images/secondaryToolbarButton-documentProperties.svg); }
+#ofdExtensions::before { mask-image: url(images/extension.svg); }
+#ofdEncrypt::before { mask-image: url(images/encryption.svg); }
+#ofdIntegrity::before { mask-image: url(images/integrity.svg); }
+#ofdIntegrityDialog { width: min(620px, calc(100vw - 32px)); }
+#ofdIntegrityFiles, #ofdEncryptionPlanFiles { max-height: 220px; overflow: auto; overflow-wrap: anywhere; padding-inline-start: 22px; }
+#ofdIntegrityReport { overflow-wrap: anywhere; }
+#ofdUnlockDialog, #ofdEncryptionDialog { width: min(520px, calc(100vw - 32px)); }
+.ofdEncryptionRecipient { border: 1px solid var(--separator-color); margin-block: 10px; padding: 10px; display: grid; gap: 8px; min-width: 0; }
+.ofdEncryptionRecipient label { display: grid; grid-template-columns: 115px minmax(0, 1fr); gap: 8px; align-items: center; }
+.ofdEncryptionRecipient [hidden] { display: none !important; }
+#ofdExtensionsDialog { width: min(580px, calc(100vw - 32px)); }
+#ofdExtensionsDialog select { width: 100%; margin-block: 6px 12px; }
+#ofdExtensionsDialog details { border-top: 1px solid var(--separator-color); padding-block: 8px; }
+#ofdExtensionsDialog summary { cursor: pointer; overflow-wrap: anywhere; }
+#ofdExtensionsDialog pre { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 200px; overflow: auto; color: var(--main-color); background: var(--field-bg-color); padding: 8px; user-select: text; }
+#ofdOfficial::after { content: "›"; margin-inline-start: auto; padding-inline-start: 12px; font-size: 18px; }
+.ofdSubmenu { position: fixed; z-index: 30001; max-width: calc(100vw - 16px); }
+.ofdSubmenu[hidden], .ofdSubmenu > button[hidden] { display: none; }
+.ofdSubmenu .ofdMenuItem { --icon-size: 16px; }
+.ofdMetadataFields { display: grid; grid-template-columns: 115px minmax(0,1fr); align-items: center; gap: 8px 12px; }
+.ofdMetadataRows { display: grid; gap: 12px; margin-bottom: 10px; }
+.ofdMetadataRow { display: grid; grid-template-columns: 36px minmax(0,1fr) auto; align-items: start; gap: 6px 8px; }
+.ofdMetadataRow > label { grid-column: 1; }
+.ofdMetadataRow > :is(input,textarea) { grid-column: 2; }
+.ofdMetadataRow > button { grid-column: 3; grid-row: 1 / 3; }
+#ofdMetadataDialog textarea { color: var(--main-color); background: var(--field-bg-color); resize: vertical; }
+#ofdMetadataDialog .buttonRow { position: sticky; bottom: -12px; background: var(--doorhanger-bg-color); padding-block: 8px; }
+@media(max-width:480px) { .ofdMetadataFields { grid-template-columns: 90px minmax(0,1fr); } }
+:root.documentHideToolbar #mainContainer > .toolbar,
+:root.documentHideMenubar #secondaryToolbarToggle,
+:root.documentHideWindowUI #viewsManagerToggleButton,
+:root.documentHideWindowUI #viewsManager {
+  display: none !important;
+}
+:root.documentHideToolbar #viewerContainer,
+:root.documentHideToolbar #sidebarContent {
+  inset-block-start: 0;
+}
+:root.documentHideWindowUI #viewerContainer {
+  scrollbar-width: none;
+}
+:root.documentHideWindowUI #viewerContainer::-webkit-scrollbar {
+  display: none;
+}

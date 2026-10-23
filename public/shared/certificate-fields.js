@@ -1,0 +1,53 @@
+// X.520 / RFC 5280 names. This catalog is shared by creation, parsing and UI.
+export const certificateFields = [
+  {
+    key: "CN",
+    oid: "2.5.4.3",
+    label: "通用名称",
+    maxLength: 64,
+    required: true,
+  },
+  { key: "O", oid: "2.5.4.10", label: "组织", maxLength: 64 },
+  { key: "OU", oid: "2.5.4.11", label: "组织单位", maxLength: 64 },
+  {
+    key: "C",
+    oid: "2.5.4.6",
+    label: "国家或地区代码",
+    maxLength: 2,
+    encoding: "printable",
+  },
+  { key: "ST", oid: "2.5.4.8", label: "省或州", maxLength: 128 },
+  { key: "L", oid: "2.5.4.7", label: "城市或地区", maxLength: 128 },
+  { key: "street", oid: "2.5.4.9", label: "街道地址", maxLength: 128 },
+  { key: "postalCode", oid: "2.5.4.17", label: "邮政编码", maxLength: 40 },
+  {
+    key: "serialNumber",
+    oid: "2.5.4.5",
+    label: "主体序列标识",
+    maxLength: 64,
+    encoding: "printable",
+  },
+  {
+    key: "emailAddress",
+    oid: "1.2.840.113549.1.9.1",
+    label: "电子邮箱",
+    maxLength: 255,
+    encoding: "ia5",
+  },
+  { key: "givenName", oid: "2.5.4.42", label: "名字", maxLength: 128 },
+  { key: "SN", oid: "2.5.4.4", label: "姓氏", maxLength: 128 },
+  { key: "title", oid: "2.5.4.12", label: "职务", maxLength: 64 },
+  {
+    key: "UID",
+    oid: "0.9.2342.19200300.100.1.1",
+    label: "用户标识",
+    maxLength: 256,
+  },
+  {
+    key: "DC",
+    oid: "0.9.2342.19200300.100.1.25",
+    label: "域组件",
+    maxLength: 63,
+    encoding: "ia5",
+  },
+];

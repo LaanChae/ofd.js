@@ -1,0 +1,28 @@
+{
+  "name": "paperdesk-ofd",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "start": "node scripts/serve.mjs"
+  },
+  "dependencies": {
+    "@noble/hashes": "1.8.0",
+    "@xmldom/xmldom": "0.9.12",
+    "asn1js": "3.0.10",
+    "fflate": "0.8.3",
+    "fontkit": "2.0.4",
+    "mupdf": "1.28.1",
+    "opentype.js": "2.0.0",
+    "pkijs": "3.4.1",
+    "sm-crypto-v2": "1.15.1",
+    "svgpath": "2.6.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

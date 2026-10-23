@@ -1,0 +1,34 @@
+# Keep the first repository limited to the application and its build inputs.
+/*
+!/.gitignore
+!/.node-version
+!/README.md
+!/package.json
+!/package-lock.json
+!/run.sh
+!/src/
+!/public/
+!/licenses/
+!/scripts/
+/scripts/*
+!/scripts/build.mjs
+!/scripts/prepare-mupdf.mjs
+!/scripts/serve.mjs
+!/scripts/integrate-pdfjs.py
+!/scripts/pdfjs_official.py
+!/scripts/pdfjs_attachment_targets.py
+!/docs/
+/docs/*
+!/docs/third-party.md
+
+# Local fonts, provenance, debug maps, credentials and OS metadata.
+/public/fonts/*
+!/public/fonts/README.md
+*.map
+.DS_Store
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
